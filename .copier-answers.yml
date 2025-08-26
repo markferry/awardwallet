@@ -1,0 +1,16 @@
+# Changes here will be overwritten by Copier
+_commit: 4.2.0
+_src_path: https://github.com/DiamondLightSource/python-copier-template.git
+author_email: github@markferry.net
+author_name: Mark Ferry
+description: AwardWallet Business API wrapper
+distribution_name: awardwallet
+docker: false
+docs_type: README
+git_platform: github.com
+github_org: markferry
+package_name: awardwallet
+pypi: false
+repo_name: awardwallet
+strict_typing: false
+type_checker: pyright
