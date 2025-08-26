@@ -12,7 +12,9 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 description = "AwardWallet business API wrapper"
-dependencies = [] # Add project dependencies here, e.g. ["click", "numpy"]
+dependencies = [
+    "requests"
+] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.md"
