@@ -128,13 +128,24 @@ class AwardWalletAPI:
         granular_sharing: bool = False,
     ) -> str:
         """
-        Gets a unique URL to connect an AwardWallet user to your business account.
+        Gets a unique URL to connect an AwardWallet user to your business
+        account.
+
+        See: https://awardwallet.com/api/account#method-Connect_1
 
         Args:
             platform (str): 'mobile' or 'desktop'.
-            access_level (AccessLevel): The level of account access to request.
-            state (str, optional): A string to maintain state between your request and the callback.
-            granular_sharing (bool, optional): If true, allows users to select which accounts to share. Defaults to False.
+            access_level (AccessLevel):
+                - 0 Read account numbers / usernames and elite statuses only
+                - 1 Read account balances and elite statuses only
+                - 2 Read all information excluding passwords
+                - 3 Full control (edit, delete, auto-login, view passwords)
+
+            state (str, optional): A string to maintain state between your
+            request and the callback.
+
+            granular_sharing (bool, optional): If true, allows users to select
+            which accounts to share. Defaults to False.
 
         Returns:
             str: The connection URL to which you should redirect your user.
@@ -150,7 +161,8 @@ class AwardWalletAPI:
 
     def get_connected_user_info_from_code(self, code: str) -> dict[str, Any]:
         """
-        After a successful connection, use the code from the redirect to get the new user's ID.
+        After a successful connection, use the code from the redirect to get
+        the new user's ID.
 
         Args:
             code (str): The code received as a GET parameter in your redirect URI.
