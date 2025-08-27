@@ -47,6 +47,23 @@ class AccessLevel(IntEnum):
     READ_ALL_EXCEPT_PASSWORDS = 2
     FULL_CONTROL = 3
 
+class ProviderKind(IntEnum):
+    """
+    Type of Provider
+    """
+
+    AIRLINE = 1
+    HOTEL = 2
+    CAR_RENTAL = 3
+    TRAIN = 4
+    OTHER = 5
+    CREDIT_CARD = 6
+    SHOPPING = 7
+    DINING = 8
+    SURVEY = 9
+    CRUISE_LINE = 10
+    PARKING = 12
+
 
 class AwardWalletAPI:
     """
