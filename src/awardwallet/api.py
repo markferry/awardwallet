@@ -47,6 +47,7 @@ class AccessLevel(IntEnum):
     READ_ALL_EXCEPT_PASSWORDS = 2
     FULL_CONTROL = 3
 
+
 class ProviderKind(IntEnum):
     """
     Type of Provider
@@ -193,7 +194,8 @@ class AwardWalletAPI:
 
     def get_account_details(self, account_id: int) -> dict[str, Any]:
         """
-        Gets comprehensive details for a specific loyalty account, including transaction history.
+        Gets comprehensive details for a specific loyalty account, including
+        transaction history.
 
         Args:
             account_id (int): The unique ID of the account.
@@ -224,7 +226,7 @@ class AwardWalletAPI:
             member_id (int): The unique ID of the Member.
 
         Returns:
-            Dict[str, Any]: A dictionary containing member details and a list of their accounts.
+            Dict[str, Any]: A dictionary containing member details and list of accounts.
         """
         return self._request("GET", f"member/{member_id}")
 
@@ -249,7 +251,8 @@ class AwardWalletAPI:
             user_id (int): The unique ID of the Connected User.
 
         Returns:
-            Dict[str, Any]: A dictionary containing user details and a list of their shared accounts.
+            Dict[str, Any]: A dictionary containing user details and a list of
+            their shared accounts.
         """
         return self._request("GET", f"connectedUser/{user_id}")
 
@@ -270,7 +273,7 @@ class AwardWalletAPI:
         login fields and supported features.
 
         Args:
-            provider_code (str): The unique code for the provider (e.g., 'aa', 'marriott').
+            provider_code (str): The unique code for the provider (e.g., 'aa').
 
         Returns:
             Dict[str, Any]: Detailed information about the provider.
