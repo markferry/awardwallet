@@ -11,7 +11,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-description = "AwardWallet business API wrapper"
+description = "AwardWallet Business API wrapper"
 dependencies = [
     "requests"
 ] # Add project dependencies here, e.g. ["click", "numpy"]
@@ -37,7 +37,7 @@ dev = [
 awardwallet = "awardwallet.__main__:main"
 
 [project.urls]
-GitHub = "https://github.com//awardwallet"
+GitHub = "https://github.com/markferry/awardwallet"
 
 [[project.authors]] # Further authors may be added by duplicating this section
 email = "github@markferry.net"
@@ -48,7 +48,7 @@ name = "Mark Ferry"
 version_file = "src/awardwallet/_version.py"
 
 [tool.pyright]
-typeCheckingMode = "strict"
+typeCheckingMode = "standard"
 reportMissingImports = false # Ignore missing stubs in imported modules
 
 [tool.pytest.ini_options]
