@@ -20,10 +20,6 @@ jobs:
       matrix:
         runs-on: ["ubuntu-latest"] # can add windows-latest, macos-latest
         python-version: ["3.11", "3.12", "3.13"]
-        include:
-          # Include one that runs in the dev environment
-          - runs-on: "ubuntu-latest"
-            python-version: "dev"
       fail-fast: false
     uses: ./.github/workflows/_test.yml
     with:
@@ -34,6 +30,13 @@ jobs:
 
   dist:
     uses: ./.github/workflows/_dist.yml
+  
+  pypi:
+    needs: [dist, test]
+    if: github.ref_type == 'tag'
+    uses: ./.github/workflows/_pypi.yml
+    permissions:
+      id-token: write
   
   release:
     needs: [dist, test]
