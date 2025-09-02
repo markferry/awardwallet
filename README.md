@@ -5,19 +5,27 @@
 
 # awardwallet
 
-AwardWallet Business API wrapper
+AwardWallet Account Access API wrapper
 
-This is where you should write a short paragraph that describes what your module does,
-how it does it, and why people should use it.
+Import loyalty point transactions from [AwardWallet](https://awardwallet.com/) using their [Account Access API](https://awardwallet.com/api/account>).
+
+As of 2025 AwardWallet integrates over 460 airline, hotel, shopping and other loyalty programmes.
 
 Source          | <https://github.com/markferry/awardwallet>
 :---:           | :---:
 PyPI            | `pip install awardwallet`
 Releases        | <https://github.com/markferry/awardwallet/releases>
 
-This is where you should put some images or code snippets that illustrate
-some relevant examples. If it is a library then you might put some
-introductory code here:
+## Setup
+
+Follow the instructions in the [API
+documentation](https://awardwallet.com/api/account#introduction) to register
+for a free Business account and create an API key.
+
+The API key is restricted to the **allowed IP addresses** you specify in the
+Business interface API Settings.
+
+## Usage
 
 ```python
 from awardwallet import AwardWalletClient
@@ -29,7 +37,7 @@ client = AwardWalletClient(api_key)
 print(json.dumps(client.list_providers(), indent=2, ensure_ascii=False))
 ```
 
-Alternatively use the built in tool:
+Alternatively use the built-in tool:
 
 ```
 awardwallet --api-key $your_api_key_here list_providers
