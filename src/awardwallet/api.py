@@ -66,7 +66,7 @@ class ProviderKind(IntEnum):
     PARKING = 12
 
 
-class AwardWalletAPI:
+class AwardWalletClient:
     """
     A Python wrapper for the AwardWallet Account Access API.
 
@@ -82,7 +82,7 @@ class AwardWalletAPI:
         base_url: str = "https://business.awardwallet.com/api/export/v1",
     ):
         """
-        Initializes the AwardWalletAPI client.
+        Initializes the AwardWallet client.
 
         Args:
             api_key (str): Your AwardWallet Business API key.
