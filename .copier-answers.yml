@@ -10,7 +10,7 @@ docs_type: README
 git_platform: github.com
 github_org: markferry
 package_name: awardwallet
-pypi: false
+pypi: true
 repo_name: awardwallet
 strict_typing: false
 type_checker: pyright

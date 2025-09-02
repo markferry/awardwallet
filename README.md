@@ -1,6 +1,6 @@
 [![CI](https://github.com/markferry/awardwallet/actions/workflows/ci.yml/badge.svg)](https://github.com/markferry/awardwallet/actions/workflows/ci.yml)
-[![Coverage](https://codecov.io/gh//awardwallet/branch/main/graph/badge.svg)](https://codecov.io/gh//awardwallet)
-
+[![Coverage](https://codecov.io/gh/markferry/awardwallet/branch/main/graph/badge.svg)](https://codecov.io/gh/markferry/awardwallet)
+[![PyPI](https://img.shields.io/pypi/v/awardwallet.svg)](https://pypi.org/project/awardwallet)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 # awardwallet
@@ -12,6 +12,7 @@ how it does it, and why people should use it.
 
 Source          | <https://github.com/markferry/awardwallet>
 :---:           | :---:
+PyPI            | `pip install awardwallet`
 Releases        | <https://github.com/markferry/awardwallet/releases>
 
 This is where you should put some images or code snippets that illustrate
