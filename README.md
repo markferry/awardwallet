@@ -20,13 +20,17 @@ some relevant examples. If it is a library then you might put some
 introductory code here:
 
 ```python
-from awardwallet import __version__
+from awardwallet import AwardWalletClient
+import json
 
-print(f"Hello awardwallet {__version__}")
+api_key = "your_api_key_here"
+client = AwardWalletClient(api_key)
+
+print(json.dumps(client.list_providers(), indent=2, ensure_ascii=False))
 ```
 
-Or if it is a commandline tool then you might put some example commands here:
+Alternatively use the built in tool:
 
 ```
-python -m awardwallet --version
+awardwallet --api-key $your_api_key_here list_providers
 ```

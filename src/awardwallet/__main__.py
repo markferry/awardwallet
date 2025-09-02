@@ -61,7 +61,7 @@ def parse_args(args: Any) -> Any:
     sub_parsers = parser.add_subparsers(dest="mode", required=True)
 
     parser_user_details = sub_parsers.add_parser(
-        "user_details", help="Fetch and display details for a specific user"
+        "user-details", help="Fetch and display details for a specific user"
     )
     parser_user_details.add_argument(
         "--user-id",
@@ -69,7 +69,7 @@ def parse_args(args: Any) -> Any:
         help="User ID for user-specific operations",
     )
     parser_account_details = sub_parsers.add_parser(
-        "account_details", help="Fetch and display details for a specific account"
+        "account-details", help="Fetch and display details for a specific account"
     )
     parser_account_details.add_argument(
         "--account-id",
@@ -77,8 +77,8 @@ def parse_args(args: Any) -> Any:
         help="Account ID for account-specific operations",
     )
 
-    sub_parsers.add_parser("list_providers", help="List all supported providers")
-    sub_parsers.add_parser("list_users", help="List all connected users")
+    sub_parsers.add_parser("list-providers", help="List all supported providers")
+    sub_parsers.add_parser("list-users", help="List all connected users")
 
     return parser.parse_args(args)
 
@@ -89,13 +89,13 @@ def main(args: Any) -> None:
     client = AwardWalletClient(args.api_key)
     resp = []
 
-    if args.mode == "list_providers":
+    if args.mode == "list-providers":
         resp = list_providers(client)
-    elif args.mode == "list_users":
+    elif args.mode == "list-users":
         resp = list_users(client)
-    elif args.mode == "account_details":
+    elif args.mode == "account-details":
         resp = account_details(client, args.account_id)
-    elif args.mode == "user_details":
+    elif args.mode == "user-details":
         resp = user_details(client, args.user_id)
 
     if resp:
