@@ -217,14 +217,26 @@ class GetConnectedUserDetailsResponse(ConnectedUserListItem):
     accounts_index: Any = Field(None, exclude=True)
 
 
+class AccountDetailsConnectedUser(ConnectedUserListItem):
+    # Connected User returned by Account details has no accounts_index
+    model_config = CONFIG
+    accounts_index: Any = Field(None, exclude=True)
+
+
+class AccountDetailsMember(MemberListItem):
+    # Member returned by Account details has no accounts_index
+    model_config = CONFIG
+    accounts_index: Any = Field(None, exclude=True)
+
+
 class GetAccountDetailsResponse(BaseModel):
     """Response model for the get_account_details endpoint."""
 
     model_config = CONFIG
 
-    account: list[Account]
+    account: Account
     member: Optional[MemberListItem] = None
-    connected_user: Optional[ConnectedUserListItem] = None
+    connected_user: Optional[AccountDetailsConnectedUser] = None
 
 
 class ProviderKind(IntEnum):

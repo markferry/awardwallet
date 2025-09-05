@@ -13,6 +13,7 @@ from awardwallet.api import (
 from awardwallet.model import (
     AccessLevel,
     ConnectedUserListItem,
+    GetAccountDetailsResponse,
     GetConnectedUserDetailsResponse,
     ProviderInfo,
     ProviderKind,
@@ -113,7 +114,7 @@ class TestGetDetailsMethods:
     @pytest.mark.parametrize(
         "test_data", ["tests/data/user_details.json"], indirect=True
     )
-    def test_get_connected_user_details_success(self, mocker, api_client, test_data):
+    def test_get_connected_user_details(self, mocker, api_client, test_data):
         """Tests successful retrieval and parsing of a detailed object."""
         # Arrange
         user_id = 12345
@@ -129,6 +130,22 @@ class TestGetDetailsMethods:
         assert details.full_name == "John Smith"
         assert len(details.accounts) == 1
         assert details.accounts[0].account_id == 7654321
+
+    @pytest.mark.parametrize(
+        "test_data", ["tests/data/account_details.json"], indirect=True
+    )
+    def test_get_account_details(self, mocker, api_client, test_data):
+        # Arrange
+        account_id = 7654321
+        mock_response_data = test_data
+        mock_api_call(mocker, json_response=mock_response_data)
+
+        # Act
+        details = api_client.get_account_details(account_id)
+
+        # Assert
+        assert isinstance(details, GetAccountDetailsResponse)
+        assert details.account.account_id == account_id
 
     @pytest.mark.parametrize(
         "test_data", ["tests/data/user_details.json"], indirect=True
