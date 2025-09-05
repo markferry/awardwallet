@@ -251,7 +251,7 @@ class ProviderKind(IntEnum):
     SHOPPING = 7
     DINING = 8
     SURVEY = 9
-    CRUISE_LINE = 10
+    CRUISE = 10
     PARKING = 12
 
 
