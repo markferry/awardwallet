@@ -86,22 +86,22 @@
             {
               "name": "Transaction Date",
               "code": "PostingDate",
-              "value": "3/31/14"
+              "value": {"value": "3/31/14", "type": "string"}
             },
             {
               "name": "Description",
               "code": "Description",
-              "value": "Expired Points"
+              "value": {"value": "Expired Points", "type": "string"}
             },
             {
               "name": "Type",
               "code": "Info",
-              "value": "Adjustments"
+              "value": {"value": "Adjustments", "type": "string"}
             },
             {
               "name": "Points",
               "code": "Miles",
-              "value": "-100"
+              "value": {"value": "-100", "type": "miles"}
             }
           ]
         },
@@ -126,42 +126,6 @@
               "name": "Points",
               "code": "Miles",
               "value": "+100"
-            }
-          ]
-        },
-        {
-          "fields": [
-            {
-              "name": "Transaction Date",
-              "code": "PostingDate",
-              "value": {
-                "value": "9/30/12",
-                "type": "string"
-              }
-            },
-            {
-              "name": "Description",
-              "code": "Description",
-              "value": {
-                "value": "Expired Points",
-                "type": "string"
-              }
-            },
-            {
-              "name": "Type",
-              "code": "Info",
-              "value": {
-                "value": "Adjustments",
-                "type": "string"
-              }
-            },
-            {
-              "name": "Points",
-              "code": "Miles",
-              "value": {
-                "value": "-1,042",
-                "type": "miles"
-              }
             }
           ]
         }

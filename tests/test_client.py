@@ -16,6 +16,7 @@ from awardwallet.model import (
     GetConnectedUserDetailsResponse,
     ProviderInfo,
     ProviderKind,
+    TypedHistoryValue,
 )
 
 DUMMY_API_KEY = "test_api_key"
@@ -128,6 +129,43 @@ class TestGetDetailsMethods:
         assert details.full_name == "John Smith"
         assert len(details.accounts) == 1
         assert details.accounts[0].account_id == 7654321
+
+    @pytest.mark.parametrize(
+        "test_data", ["tests/data/user_details.json"], indirect=True
+    )
+    def test_get_connected_user_details_with_typed_history(
+        self, mocker, api_client, test_data
+    ):
+        """UPDATED: Verifies that history values are normalized and correctly typed."""
+        # Arrange
+        user_id = test_data["userId"]
+        mock_api_call(mocker, json_response=test_data)
+
+        # Act
+        details = api_client.get_connected_user_details(user_id)
+
+        # Assert
+        assert isinstance(details, GetConnectedUserDetailsResponse)
+        account = details.accounts[0]
+
+        field_date = account.history[0].fields[0]
+        assert field_date.name == "Transaction Date"
+        assert isinstance(field_date.value, TypedHistoryValue)
+        assert isinstance(field_date.value.value, str)
+        assert field_date.value.type == "string"
+
+        field_points = account.history[0].fields[3]
+        assert field_points.name == "Points"
+        assert isinstance(field_points.value, TypedHistoryValue)
+        assert field_points.value.value == -100
+        assert isinstance(field_points.value.value, int)
+        assert field_points.value.type == "miles"
+
+        # old-style is returned as str
+        field_points = account.history[1].fields[3]
+        assert field_points.name == "Points"
+        assert isinstance(field_points.value, TypedHistoryValue)
+        assert field_points.value.value == "+100"
 
     def test_pydantic_validation_error(self, mocker, api_client):
         # Arrange

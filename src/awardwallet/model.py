@@ -2,9 +2,15 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import IntEnum
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_validator,
+)
 from pydantic.alias_generators import to_camel
 
 CONFIG = ConfigDict(alias_generator=to_camel, populate_by_name=True)
@@ -30,40 +36,69 @@ class AccountProperty(BaseModel):
     kind: Optional[int] = None
 
 
-class HistoryFieldValue(BaseModel):
-    """Represents a history field value when it's a nested object."""
+class TypedHistoryValue(BaseModel):
+    """
+    Represents the nested value object in a history field.
+    It automatically converts its 'value' to the correct Python type.
+    """
 
-    value: str
-    type: Optional[str] = "string"  # Default type if not provided
+    type: str
+    value: Any  # Start with 'Any' and let the validator assign the correct type
+
+    @model_validator(mode="before")
+    @classmethod
+    def convert_value_based_on_type(cls, data: dict[str, Any]) -> dict[str, Any]:
+        """
+        Reads the 'type' field and attempts to cast the 'value' field
+        to the appropriate Python type before validation continues.
+        """
+        if not isinstance(data, dict):
+            return data  # Should not happen with our setup, but safe to have
+
+        type_str = data.get("type")
+        raw_value = data.get("value")
+
+        if raw_value is None:
+            return data
+
+        converted_value = raw_value
+        try:
+            if type_str in ("miles", "points"):
+                # Remove commas and convert to integer
+                converted_value = int(str(raw_value).replace(",", ""))
+            # Add more type conversions here as they are discovered
+            # For example:
+            # elif type_str == "date":
+            #     converted_value = datetime.strptime(raw_value, "%m/%d/%y").date()
+        except (ValueError, TypeError):
+            # If conversion fails, leave it as a string
+            converted_value = str(raw_value)
+
+        data["value"] = converted_value
+        return data
 
 
 class HistoryField(BaseModel):
-    """A single field within a transaction history entry."""
+    """
+    A single field within a transaction history entry.
+    Ensures its 'value' is always a TypedHistoryValue object.
+    """
 
     model_config = CONFIG
 
     code: str
     name: str
-    # try to parse into HistoryFieldValue first, then fall back to str.
-    value: Union[HistoryFieldValue, str]
+    value: TypedHistoryValue
 
-    # runs AFTER standard validation and normalizes the data.
-    # ensures that `self.value` is always a HistoryFieldValue object.
+    # runs BEFORE standard validation. It ensures that if the API
+    # sends a simple string, we wrap it into the required object structure.
     @field_validator("value", mode="before")
     @classmethod
-    def normalize_value(cls, v: Any) -> Union[dict[str, Any], Any]:
-        """If the value is a simple string, wrap it in the object structure."""
+    def ensure_value_is_object(cls, v: Any) -> dict[str, Any]:
+        """If the incoming value is a simple string, wrap it in the object structure."""
         if isinstance(v, str):
             return {"value": v, "type": "string"}
         return v
-
-    @computed_field
-    @property
-    def effective_value(self) -> str:
-        """A convenient property to always get the string value directly."""
-        if isinstance(self.value, HistoryFieldValue):
-            return self.value.value
-        return self.value
 
 
 class HistoryItem(BaseModel):
