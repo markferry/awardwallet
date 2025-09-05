@@ -89,16 +89,15 @@ def main(args: Any) -> None:
     resp = []
 
     if args.mode == "list-providers":
-        resp = list_providers(client)
+        resp = json.dumps(list_providers(client), indent=2, ensure_ascii=False)
     elif args.mode == "list-users":
-        resp = list_users(client)
+        resp = json.dumps(list_users(client), indent=2, ensure_ascii=False)
     elif args.mode == "account-details":
-        resp = account_details(client, args.account_id)
+        resp = account_details(client, args.account_id).model_dump_json(indent=2)
     elif args.mode == "user-details":
-        resp = user_details(client, args.user_id)
+        resp = user_details(client, args.user_id).model_dump_json(indent=2)
 
-    if resp:
-        print(json.dumps(resp, indent=2, ensure_ascii=False))
+    print(resp)
 
 
 if __name__ == "__main__":
