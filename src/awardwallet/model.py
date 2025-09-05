@@ -106,7 +106,7 @@ class HistoryItem(BaseModel):
 
     model_config = CONFIG
 
-    fields: Optional[list[HistoryField]] = None
+    fields: Optional[list[HistoryField]] = []
 
 
 class SubAccount(BaseModel):
@@ -119,8 +119,8 @@ class SubAccount(BaseModel):
     balance: str
     balance_raw: Optional[float] = None
     last_detected_change: Optional[str] = None
-    properties: Optional[list[AccountProperty]] = None
-    history: Optional[list[HistoryItem]] = None
+    properties: Optional[list[AccountProperty]] = []
+    history: Optional[list[HistoryItem]] = []
 
 
 class Account(BaseModel):
@@ -145,9 +145,9 @@ class Account(BaseModel):
     last_retrieve_date: Optional[datetime] = None
     last_change_date: Optional[datetime] = None
     error_message: Optional[str] = None
-    properties: Optional[list[AccountProperty]] = None
-    history: Optional[list[HistoryItem]] = None
-    sub_accounts: Optional[list[SubAccount]] = None
+    properties: Optional[list[AccountProperty]] = []
+    history: Optional[list[HistoryItem]] = []
+    sub_accounts: Optional[list[SubAccount]] = []
 
 
 class AccountsIndexItem(BaseModel):
@@ -290,8 +290,8 @@ class ProviderDetails(BaseModel):
     login2: Optional[ProviderInputField] = None
     login3: Optional[ProviderInputField] = None
     password: Optional[ProviderInputField] = None
-    properties: Optional[list[ProviderPropertyInfo]] = None
-    history_columns: Optional[list[ProviderPropertyInfo]] = None
+    properties: Optional[list[ProviderPropertyInfo]] = []
+    history_columns: Optional[list[ProviderPropertyInfo]] = []
     auto_login: Optional[bool] = None
     can_parse_history: Optional[bool] = None
     can_check_itinerary: Optional[bool] = None
