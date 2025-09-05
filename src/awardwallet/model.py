@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import IntEnum
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
 from pydantic.alias_generators import to_camel
 
 CONFIG = ConfigDict(alias_generator=to_camel, populate_by_name=True)
@@ -30,6 +30,13 @@ class AccountProperty(BaseModel):
     kind: Optional[int] = None
 
 
+class HistoryFieldValue(BaseModel):
+    """Represents a history field value when it's a nested object."""
+
+    value: str
+    type: Optional[str] = "string"  # Default type if not provided
+
+
 class HistoryField(BaseModel):
     """A single field within a transaction history entry."""
 
@@ -37,7 +44,26 @@ class HistoryField(BaseModel):
 
     code: str
     name: str
-    value: str
+    # try to parse into HistoryFieldValue first, then fall back to str.
+    value: Union[HistoryFieldValue, str]
+
+    # runs AFTER standard validation and normalizes the data.
+    # ensures that `self.value` is always a HistoryFieldValue object.
+    @field_validator("value", mode="before")
+    @classmethod
+    def normalize_value(cls, v: Any) -> Union[dict[str, Any], Any]:
+        """If the value is a simple string, wrap it in the object structure."""
+        if isinstance(v, str):
+            return {"value": v, "type": "string"}
+        return v
+
+    @computed_field
+    @property
+    def effective_value(self) -> str:
+        """A convenient property to always get the string value directly."""
+        if isinstance(self.value, HistoryFieldValue):
+            return self.value.value
+        return self.value
 
 
 class HistoryItem(BaseModel):
