@@ -1,0 +1,159 @@
+{
+  "userId": 12345,
+  "fullName": "John Smith",
+  "status": "Free",
+  "userName": "JSmith",
+  "email": "JSmith@email.com",
+  "forwardingEmail": "JSmith@AwardWallet.com",
+  "accessLevel": "Regular",
+  "connectionType": "Connected",
+  "accountsAccessLevel": "Full control",
+  "accountsSharedByDefault": true,
+  "editConnectionUrl": "https://business.awardwallet.com/members/connection/112233",
+  "accountListUrl": "https://business.awardwallet.com/account/list#/?agentId=112233",
+  "timelineUrl": "https://business.awardwallet.com/timeline/?agentId=166765#/112233",
+  "bookingRequestsUrl": "https://business.awardwallet.com/awardBooking/queue?user_filter=332211",
+  "accounts": [
+    {
+      "accountId": 7654321,
+      "code": "british",
+      "displayName": "British Airways (Executive Club)",
+      "kind": "Airlines",
+      "login": "johnsmith",
+      "autologinUrl": "https://business.awardwallet.com/account/redirect?ID=7654321",
+      "updateUrl": "https://business.awardwallet.com/account/edit/7654321?autosubmit=1",
+      "editUrl": "https://business.awardwallet.com/account/edit/7654321",
+      "balance": "146,780",
+      "balanceRaw": 146780,
+      "owner": "John Smith",
+      "errorCode": 1,
+      "lastDetectedChange": "+750",
+      "expirationDate": "2018-12-10T00:00:00+00:00",
+      "lastRetrieveDate": "2016-01-15T00:00:00+00:00",
+      "lastChangeDate": "2016-01-15T00:49:33+00:00",
+      "properties": [
+        {
+          "name": "Next Elite Level",
+          "value": "Bronze",
+          "kind": 9
+        },
+        {
+          "name": "Date of joining the club",
+          "value": "20 Jun 2013",
+          "kind": 5
+        },
+        {
+          "name": "Lifetime Tier Points",
+          "value": "35,000"
+        },
+        {
+          "name": "Executive Club Tier Points",
+          "value": "35,000"
+        },
+        {
+          "name": "Card expiry date",
+          "value": "31 Mar 2017"
+        },
+        {
+          "name": "Membership year ends",
+          "value": "08 Feb 2016"
+        },
+        {
+          "name": "Last Activity",
+          "value": "10-Dec-15",
+          "kind": 13
+        },
+        {
+          "name": "Name",
+          "value": "Mr Smith",
+          "kind": 12
+        },
+        {
+          "name": "Level",
+          "value": "Blue",
+          "rank": 0,
+          "kind": 3
+        },
+        {
+          "name": "Membership no",
+          "value": "1122334455",
+          "kind": 1
+        }
+      ],
+      "history": [
+        {
+          "fields": [
+            {
+              "name": "Transaction Date",
+              "code": "PostingDate",
+              "value": "3/31/14"
+            },
+            {
+              "name": "Description",
+              "code": "Description",
+              "value": "Expired Points"
+            },
+            {
+              "name": "Type",
+              "code": "Info",
+              "value": "Adjustments"
+            },
+            {
+              "name": "Points",
+              "code": "Miles",
+              "value": "-100"
+            }
+          ]
+        },
+        {
+          "fields": [
+            {
+              "name": "Transaction Date",
+              "code": "PostingDate",
+              "value": "12/11/13"
+            },
+            {
+              "name": "Description",
+              "code": "Description",
+              "value": "Google Wallet"
+            },
+            {
+              "name": "Type",
+              "code": "Info",
+              "value": "Other Earning"
+            },
+            {
+              "name": "Points",
+              "code": "Miles",
+              "value": "+100"
+            }
+          ]
+        },
+        {
+          "fields": [
+            {
+              "name": "Transaction Date",
+              "code": "PostingDate",
+              "value": "9/30/12"
+            },
+            {
+              "name": "Description",
+              "code": "Description",
+              "value": "Expired Points"
+            },
+            {
+              "name": "Type",
+              "code": "Info",
+              "value": "Adjustments"
+            },
+            {
+              "name": "Points",
+              "code": "Miles",
+              "value": "-1,042"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

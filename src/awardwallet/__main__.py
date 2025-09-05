@@ -4,7 +4,6 @@ from argparse import ArgumentParser
 from typing import Any
 
 from awardwallet import AwardWalletClient
-from awardwallet.api import ProviderKind
 
 from . import __version__
 
@@ -15,7 +14,7 @@ def list_users(client):
     connected_users = client.list_connected_users()
     users = {}
     for user in connected_users:
-        users[user["userId"]] = user["userName"]
+        users[user.user_id] = user.user_name
 
     return users
 
@@ -32,11 +31,11 @@ def list_providers(client):
     providers = client.list_providers()
 
     providers_filtered = {
-        p["code"]: {
-            "displayName": p["displayName"],
-            "kind": ProviderKind(p["kind"]).name,
+        p.code: {
+            "displayName": p.display_name,
+            "kind": p.kind.name,
         }
-        for p in sorted(providers, key=lambda d: d["displayName"])
+        for p in sorted(providers, key=lambda d: d.display_name)
     }
 
     return providers_filtered

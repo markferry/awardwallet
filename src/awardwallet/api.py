@@ -1,11 +1,19 @@
 # awardwallet_api.py
 
-from enum import IntEnum
 from typing import Any
 
 import requests
 
-# --- Custom Exceptions for Better Error Handling ---
+from .model import (
+    AccessLevel,
+    ConnectedUserListItem,
+    GetAccountDetailsResponse,
+    GetConnectedUserDetailsResponse,
+    GetMemberDetailsResponse,
+    MemberListItem,
+    ProviderDetails,
+    ProviderInfo,
+)
 
 
 class AwardWalletAPIError(Exception):
@@ -37,35 +45,6 @@ class NotFoundError(AwardWalletAPIError):
 # --- Helper Enum for Access Levels ---
 
 
-class AccessLevel(IntEnum):
-    """
-    Identifies the level of account access to be granted by the user.
-    """
-
-    READ_NUMBERS_AND_STATUS = 0
-    READ_BALANCES_AND_STATUS = 1
-    READ_ALL_EXCEPT_PASSWORDS = 2
-    FULL_CONTROL = 3
-
-
-class ProviderKind(IntEnum):
-    """
-    Type of Provider
-    """
-
-    AIRLINE = 1
-    HOTEL = 2
-    CAR_RENTAL = 3
-    TRAIN = 4
-    OTHER = 5
-    CREDIT_CARD = 6
-    SHOPPING = 7
-    DINING = 8
-    SURVEY = 9
-    CRUISE_LINE = 10
-    PARKING = 12
-
-
 class AwardWalletClient:
     """
     A Python wrapper for the AwardWallet Account Access API.
@@ -94,7 +73,7 @@ class AwardWalletClient:
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self._session = requests.Session()
-        # Per documentation, authentication is done via the 'X-Authentication' header
+
         self._session.headers.update(
             {
                 "X-Authentication": self.api_key,
@@ -115,7 +94,7 @@ class AwardWalletClient:
                 try:
                     error_data = response.json()
                     message = error_data.get("error", response.text)
-                except requests.exceptions.JSONDecodeError:
+                except (ValueError, requests.exceptions.JSONDecodeError):
                     message = response.text
 
                 if response.status_code == 401:
@@ -127,7 +106,6 @@ class AwardWalletClient:
 
                 raise AwardWalletAPIError(message, response.status_code)
 
-            # Handle 204 No Content response
             if response.status_code == 204:
                 return None
 
@@ -142,7 +120,7 @@ class AwardWalletClient:
         self,
         platform: str,
         access_level: AccessLevel,
-        state: str | None = None,
+        state: str | None,
         granular_sharing: bool = False,
     ) -> str:
         """
@@ -175,107 +153,86 @@ class AwardWalletClient:
             "granularSharing": granular_sharing,
         }
         response = self._request("POST", "create-auth-url", json=payload)
-        return response.get("url")
+        return response["url"]
 
     def get_connected_user_info_from_code(self, code: str) -> dict[str, Any]:
-        """
-        After a successful connection, use the code from the redirect to get
-        the new user's ID.
-
-        Args:
-            code (str): The code received as a GET parameter in your redirect URI.
-
-        Returns:
-            Dict[str, Any]: A dictionary containing the 'userId'.
-        """
         return self._request("GET", f"get-connection-info/{code}")
 
     # --- Accounts Endpoint ---
-
-    def get_account_details(self, account_id: int) -> dict[str, Any]:
+    #
+    def get_account_details(self, account_id: int) -> GetAccountDetailsResponse:
         """
         Gets comprehensive details for a specific loyalty account, including
         transaction history.
 
         Args:
             account_id (int): The unique ID of the account.
-
-        Returns:
-            Dict[str, Any]: A dictionary containing the detailed account information.
         """
-        return self._request("GET", f"account/{account_id}")
+        response = self._request("GET", f"account/{account_id}")
+        return GetAccountDetailsResponse.model_validate(response)
 
     # --- Members Endpoints (Profiles managed within your business account) ---
 
-    def list_members(self) -> list[dict[str, Any]]:
+    def list_members(self) -> list[MemberListItem]:
         """
         Retrieves all 'Members' under your business account. Members are profiles
         you create and are not linked to a personal AwardWallet account.
 
-        Returns:
-            List[Dict[str, Any]]: A list of member objects.
         """
         response = self._request("GET", "member")
-        return response.get("members", [])
+        return [
+            MemberListItem.model_validate(item) for item in response.get("members", [])
+        ]
 
-    def get_member_details(self, member_id: int) -> dict[str, Any]:
+    def get_member_details(self, member_id: int) -> GetMemberDetailsResponse:
         """
         Retrieves all loyalty accounts and details for a specific Member.
 
         Args:
             member_id (int): The unique ID of the Member.
-
-        Returns:
-            Dict[str, Any]: A dictionary containing member details and list of accounts.
         """
-        return self._request("GET", f"member/{member_id}")
+        response = self._request("GET", f"member/{member_id}")
+        return GetMemberDetailsResponse.model_validate(response)
 
     # --- Connected Users Endpoints (Users with their own AwardWallet account) ---
 
-    def list_connected_users(self) -> list[dict[str, Any]]:
+    def list_connected_users(self) -> list[ConnectedUserListItem]:
         """
         Retrieves all users who have connected their personal AwardWallet
         account to your business account.
-
-        Returns:
-            List[Dict[str, Any]]: A list of connected user objects.
         """
         response = self._request("GET", "connectedUser")
-        return response.get("connectedUsers", [])
+        return [
+            ConnectedUserListItem.model_validate(item)
+            for item in response.get("connectedUsers", [])
+        ]
 
-    def get_connected_user_details(self, user_id: int) -> dict[str, Any]:
+    def get_connected_user_details(
+        self, user_id: int
+    ) -> GetConnectedUserDetailsResponse:
         """
         Retrieves details and shared loyalty accounts for a specific Connected User.
 
         Args:
             user_id (int): The unique ID of the Connected User.
-
-        Returns:
-            Dict[str, Any]: A dictionary containing user details and a list of
-            their shared accounts.
         """
-        return self._request("GET", f"connectedUser/{user_id}")
+        response = self._request("GET", f"connectedUser/{user_id}")
+        return GetConnectedUserDetailsResponse.model_validate(response)
 
-    # --- Providers Endpoints ---
-
-    def list_providers(self) -> list[dict[str, Any]]:
+    def list_providers(self) -> list[ProviderInfo]:
         """
         Retrieves the list of all loyalty program providers supported by AwardWallet.
-
-        Returns:
-            List[Dict[str, Any]]: A list of provider information.
         """
-        return self._request("GET", "providers/list")
+        response = self._request("GET", "providers/list")
+        return [ProviderInfo.model_validate(item) for item in response]
 
-    def get_provider_info(self, provider_code: str) -> dict[str, Any]:
+    def get_provider_info(self, provider_code: str) -> ProviderDetails:
         """
         Retrieves detailed information about a specific provider, including required
         login fields and supported features.
 
         Args:
             provider_code (str): The unique code for the provider (e.g., 'aa').
-
-        Returns:
-            Dict[str, Any]: Detailed information about the provider.
         """
-        return self._request("GET", f"providers/{provider_code}")
+        response = self._request("GET", f"providers/{provider_code}")
+        return ProviderDetails.model_validate(response)
