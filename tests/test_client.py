@@ -165,13 +165,13 @@ class TestGetDetailsMethods:
         assert isinstance(details, GetConnectedUserDetailsResponse)
         account = details.accounts[0]
 
-        field_date = account.history[0].fields[0]
+        field_date = account.history[0].fields[0]  # pyright: ignore
         assert field_date.name == "Transaction Date"
         assert isinstance(field_date.value, TypedHistoryValue)
         assert isinstance(field_date.value.value, str)
         assert field_date.value.type == "string"
 
-        field_points = account.history[0].fields[3]
+        field_points = account.history[0].fields[3]  # pyright: ignore
         assert field_points.name == "Points"
         assert isinstance(field_points.value, TypedHistoryValue)
         assert field_points.value.value == -100
@@ -179,7 +179,7 @@ class TestGetDetailsMethods:
         assert field_points.value.type == "miles"
 
         # old-style is returned as str
-        field_points = account.history[1].fields[3]
+        field_points = account.history[1].fields[3]  # pyright: ignore
         assert field_points.name == "Points"
         assert isinstance(field_points.value, TypedHistoryValue)
         assert field_points.value.value == "+100"
