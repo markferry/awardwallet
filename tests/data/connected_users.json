@@ -1,0 +1,31 @@
+{
+  "connectedUsers": [
+    {
+      "userId": 123456,
+      "fullName": "John D",
+      "status": "Free",
+      "userName": "nosure",
+      "email": "testuser@example.com",
+      "forwardingEmail": "testuser@email.AwardWallet.com",
+      "accessLevel": "Administrator",
+      "connectionType": "Connected",
+      "accountsAccessLevel": "Read all",
+      "accountsSharedByDefault": true,
+      "editConnectionUrl": "https://business.awardwallet.com/members/connection/123456",
+      "accountListUrl": "https://business.awardwallet.com/account/list/?agentId=123456",
+      "timelineUrl": "https://business.awardwallet.com/timeline/?agentId=964536124590",
+      "accountsIndex": [
+        {
+          "accountId": 3150412,
+          "lastChangeDate": "2020-12-22T21:11:09+00:00",
+          "lastRetrieveDate": "2021-08-09T11:05:13+00:00"
+        },
+        {
+          "accountId": 3557989,
+          "lastChangeDate": "2017-02-20T14:19:33+00:00",
+          "lastRetrieveDate": "2019-10-25T21:21:56+00:00"
+        }
+      ]
+    }
+  ]
+}

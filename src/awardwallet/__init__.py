@@ -10,7 +10,7 @@ from ._version import __version__
 
 # API - order matters
 # isort: off
-from .api import AwardWalletClient
+from .client import AwardWalletClient
 
 # isort: on
 
