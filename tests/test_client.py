@@ -4,7 +4,7 @@ from unittest.mock import Mock
 import pytest
 from pydantic import ValidationError
 
-from awardwallet.api import (
+from awardwallet.client import (
     AuthenticationError,
     AwardWalletAPIError,
     AwardWalletClient,

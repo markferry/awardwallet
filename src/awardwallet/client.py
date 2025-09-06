@@ -1,5 +1,3 @@
-# awardwallet_api.py
-
 from typing import Any
 
 import requests
