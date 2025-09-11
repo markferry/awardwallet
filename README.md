@@ -28,13 +28,19 @@ Business interface API Settings.
 ## Usage
 
 ```python
-from awardwallet import AwardWalletClient
 import json
+
+from awardwallet import AwardWalletClient
+from awardwallet.model import ProviderInfo
 
 api_key = "your_api_key_here"
 client = AwardWalletClient(api_key)
 
-print(json.dumps(client.list_providers(), indent=2, ensure_ascii=False))
+pl = client.list_providers()
+pll = [ProviderInfo.model_validate(item) for item in pl]
+
+for p in pl:
+  print(f"{p.code}\t{p.display_name}\t{p.kind.name}")
 ```
 
 Alternatively use the built-in tool:
