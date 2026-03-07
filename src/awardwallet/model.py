@@ -34,6 +34,7 @@ class AccountProperty(BaseModel):
     value: str
     rank: Optional[int] = None
     kind: Optional[int] = None
+    is_value_verified: Optional[bool] = None
 
 
 class TypedHistoryValue(BaseModel):
@@ -138,9 +139,11 @@ class Account(BaseModel):
     edit_url: str
     balance: str
     balance_raw: float
+    is_balance_verified: Optional[bool] = None
     owner: str
     error_code: int
     last_detected_change: Optional[str] = None
+    barcode: Optional[str] = None
     expiration_date: Optional[datetime] = None
     last_retrieve_date: Optional[datetime] = None
     last_change_date: Optional[datetime] = None
