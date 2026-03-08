@@ -25,6 +25,30 @@ class AccessLevel(IntEnum):
     FULL_CONTROL = 3
 
 
+class AccountPropertyKind(IntEnum):
+    """Type of AccountProperty"""
+
+    ACCOUNT_NUMBER = 1
+    EXPIRATION = 2
+    STATUS = 3
+    LIFETIME_POINTS = 4
+    MEMBER_SINCE = 5
+    EXPIRING_BALANCE = 6
+    YTD_MILES = 7
+    YTD_SEGMENTS = 8
+    NEXT_ELITE_LEVEL = 9
+    MILES_NEEDED_TO_NEXT_LEVEL = 10
+    SEGMENTS_NEEDED_TO_NEXT_LEVEL = 11
+    NAME = 12
+    LAST_ACTIVITY = 13
+    MILES_NEEDED_FOR_NEXT_REWARD = 14
+    STATUS_EXPIRATION = 15
+    MILES_TO_RETAIN_STATUS = 16
+    SEGMENTS_TO_RETAIN_STATUS = 17
+    ALLIANCE_ELITE_LEVEL = 18
+    STATUS_MILES = 19
+
+
 class AccountProperty(BaseModel):
     """A secondary attribute of a loyalty account."""
 
@@ -33,7 +57,7 @@ class AccountProperty(BaseModel):
     name: str
     value: str
     rank: Optional[int] = None
-    kind: Optional[int] = None
+    kind: Optional[AccountPropertyKind] = None
     is_value_verified: Optional[bool] = None
 
 
@@ -152,6 +176,20 @@ class Account(BaseModel):
     history: Optional[list[HistoryItem]] = []
     sub_accounts: Optional[list[SubAccount]] = []
 
+    def get_account_number(self) -> str:
+        """Helper method to extract the account number from properties."""
+        for prop in self.properties or []:
+            if prop.kind == AccountPropertyKind.ACCOUNT_NUMBER:
+                return prop.value
+        return self.login or ""
+
+    def get_account_property(self, kind: AccountPropertyKind) -> Optional[str]:
+        """Helper method to extract a specific property value by its kind."""
+        for prop in self.properties or []:
+            if prop.kind == kind:
+                return prop.value
+        return None
+
 
 class AccountsIndexItem(BaseModel):
     """A lightweight reference to an account, used in list views."""
@@ -256,6 +294,24 @@ class ProviderKind(IntEnum):
     SURVEY = 9
     CRUISE = 10
     PARKING = 12
+
+    @classmethod
+    def from_str(cls, value: str) -> ProviderKind | None:
+        """Convert an Account 'kind' string to a ProviderKind enum."""
+        mapping = {
+            "Airlines": cls.AIRLINE,
+            "Hotels": cls.HOTEL,
+            "Rentals": cls.CAR_RENTAL,
+            "Trains": cls.TRAIN,
+            "Other": cls.OTHER,
+            "Credit Cards": cls.CREDIT_CARD,
+            "Shopping": cls.SHOPPING,
+            "Dining": cls.DINING,
+            "Surveys": cls.SURVEY,
+            "Cruises": cls.CRUISE,
+            "Parking": cls.PARKING,
+        }
+        return mapping.get(value)
 
 
 class ProviderInfo(BaseModel):

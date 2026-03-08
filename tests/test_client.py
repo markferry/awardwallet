@@ -12,6 +12,7 @@ from awardwallet.client import (
 )
 from awardwallet.model import (
     AccessLevel,
+    AccountPropertyKind,
     ConnectedUserListItem,
     GetAccountDetailsResponse,
     GetConnectedUserDetailsResponse,
@@ -146,6 +147,12 @@ class TestGetDetailsMethods:
         # Assert
         assert isinstance(details, GetAccountDetailsResponse)
         assert details.account.account_id == account_id
+        assert details.account.get_account_number() == "1122334455"
+        assert (
+            details.account.get_account_property(AccountPropertyKind.LAST_ACTIVITY)
+            == "10-Dec-15"
+        )
+        assert ProviderKind.from_str(details.account.kind) == ProviderKind.AIRLINE
 
     @pytest.mark.parametrize(
         "test_data", ["tests/data/user_details.json"], indirect=True
