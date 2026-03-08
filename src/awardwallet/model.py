@@ -144,7 +144,7 @@ class SubAccount(BaseModel):
     balance: str
     balance_raw: Optional[float] = None
     last_detected_change: Optional[str] = None
-    expiration_date: Optional[datetime] = None    
+    expiration_date: Optional[datetime] = None
     properties: Optional[list[AccountProperty]] = []
     history: Optional[list[HistoryItem]] = []
 
