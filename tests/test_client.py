@@ -238,7 +238,9 @@ class TestErrorHandling:
         """Tests that a 401 response raises AuthenticationError."""
         # Arrange
         mock_api_call(
-            mocker, status_code=401, json_response={"error": "Invalid API Key"}
+            mocker,
+            status_code=401,
+            json_response={"error": "access_denied", "message": "Invalid API Key"},
         )
 
         # Act & Assert
