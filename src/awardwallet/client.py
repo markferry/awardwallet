@@ -91,7 +91,7 @@ class AwardWalletClient:
             if 400 <= response.status_code < 600:
                 try:
                     error_data = response.json()
-                    message = error_data.get("error", response.text)
+                    message = error_data.get("message", response.text)
                 except (ValueError, requests.exceptions.JSONDecodeError):
                     message = response.text
 
