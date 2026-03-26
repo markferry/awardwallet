@@ -10,9 +10,11 @@
     "editUrl": "https://business.awardwallet.com/account/edit/7654321",
     "balance": "146,780",
     "balanceRaw": 146780,
+    "isBalanceVerified": true,
     "owner": "John Smith",
     "errorCode": 1,
     "lastDetectedChange": "+750",
+    "barcode": "code128",
     "expirationDate": "2018-12-10T00:00:00+00:00",
     "lastRetrieveDate": "2016-01-15T00:00:00+00:00",
     "lastChangeDate": "2016-01-15T00:49:33+00:00",
@@ -57,7 +59,8 @@
         "name": "Level",
         "value": "Blue",
         "rank": 0,
-        "kind": 3
+        "kind": 3,
+        "isValueVerified": true
       },
       {
         "name": "Membership no",
