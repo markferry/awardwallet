@@ -82,8 +82,11 @@ def parse_args(args: Any) -> Any:
     return parser.parse_args(args)
 
 
-def main(args: Any) -> None:
-    args = parse_args(args)
+def main(argv: list[str] | None = None) -> None:
+    if argv is None:
+        argv = sys.argv[1:]
+
+    args = parse_args(argv)
 
     client = AwardWalletClient(args.api_key)
     resp = []
@@ -101,4 +104,4 @@ def main(args: Any) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
