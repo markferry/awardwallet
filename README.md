@@ -46,5 +46,5 @@ for p in pl:
 Alternatively use the built-in tool:
 
 ```
-awardwallet --api-key $your_api_key_here list_providers
+awardwallet --api-key $your_api_key_here list-providers
 ```
