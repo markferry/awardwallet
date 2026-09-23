@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from typing import Any
 
 import requests
@@ -43,6 +45,41 @@ class NotFoundError(AwardWalletAPIError):
 # --- Helper Enum for Access Levels ---
 
 
+class DebugLog:
+    """Appends raw API request/response records as newline-delimited JSON."""
+
+    def __init__(self, path: Path):
+        self._file = path.open("a", encoding="utf-8", newline="\n")
+
+    def close(self) -> None:
+        """Close the underlying file."""
+        if not self._file.closed:
+            self._file.close()
+
+    def respond(self, method: str, endpoint: str, response: requests.Response) -> None:
+        """Record a single response as one JSON object on a new line."""
+        try:
+            try:
+                body = response.json()
+            except (ValueError, requests.exceptions.JSONDecodeError):
+                body = response.text
+            line = json.dumps(
+                {
+                    "method": method,
+                    "endpoint": endpoint,
+                    "status": response.status_code,
+                    "body": body,
+                },
+                ensure_ascii=False,
+                separators=(",", ":"),
+            )
+            self._file.write(line + "\n")
+            self._file.flush()
+        except Exception:
+            # Debugging must never break the client
+            pass
+
+
 class AwardWalletClient:
     """
     A Python wrapper for the AwardWallet Account Access API.
@@ -57,6 +94,7 @@ class AwardWalletClient:
         self,
         api_key: str,
         base_url: str = "https://business.awardwallet.com/api/export/v1",
+        debug_log: DebugLog | None = None,
     ):
         """
         Initializes the AwardWallet client.
@@ -64,12 +102,15 @@ class AwardWalletClient:
         Args:
             api_key (str): Your AwardWallet Business API key.
             base_url (str, optional): The base URL of the API.
+            debug_log (DebugLog, optional): Where to append raw API request/response
+                records as newline-delimited JSON, for debugging.
         """
         if not api_key:
             raise ValueError("API key cannot be empty.")
 
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
+        self.debug_log = debug_log
         self._session = requests.Session()
 
         self._session.headers.update(
@@ -87,6 +128,8 @@ class AwardWalletClient:
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
         try:
             response = self._session.request(method, url, **kwargs)
+            if self.debug_log is not None:
+                self.debug_log.respond(method, endpoint, response)
 
             if 400 <= response.status_code < 600:
                 try:
