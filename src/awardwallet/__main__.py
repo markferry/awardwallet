@@ -1,11 +1,13 @@
 import json
 import sys
 from argparse import ArgumentParser
+from pathlib import Path
 from typing import Any
 
 from awardwallet import AwardWalletClient
 
 from . import __version__
+from .client import DebugLog
 
 __all__ = ["main"]
 
@@ -57,6 +59,14 @@ def parse_args(args: Any) -> Any:
         help="API key, can be generated on AwardWallet Business interface",
     )
 
+    parser.add_argument(
+        "--dump",
+        type=Path,
+        default=None,
+        metavar="FILE",
+        help="Append raw API responses as newline-delimited JSON to FILE",
+    )
+
     sub_parsers = parser.add_subparsers(dest="mode", required=True)
 
     parser_user_details = sub_parsers.add_parser(
@@ -88,7 +98,16 @@ def main(argv: list[str] | None = None) -> None:
 
     args = parse_args(argv)
 
-    client = AwardWalletClient(args.api_key)
+    debug_log = DebugLog(args.dump) if args.dump else None
+    try:
+        _main(args, debug_log)
+    finally:
+        if debug_log:
+            debug_log.close()
+
+
+def _main(args: Any, debug_log: DebugLog | None) -> None:
+    client = AwardWalletClient(args.api_key, debug_log=debug_log)
     resp = []
 
     if args.mode == "list-providers":
