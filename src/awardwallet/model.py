@@ -163,7 +163,7 @@ class Account(BaseModel):
     update_url: str
     edit_url: str
     balance: str
-    balance_raw: float
+    balance_raw: Optional[float] = None
     is_balance_verified: Optional[bool] = None
     owner: str
     error_code: int

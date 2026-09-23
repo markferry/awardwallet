@@ -191,6 +191,25 @@ class TestGetDetailsMethods:
         assert isinstance(field_points.value, TypedHistoryValue)
         assert field_points.value.value == "+100"
 
+    @pytest.mark.parametrize(
+        "test_data", ["tests/data/user_details_null_balance.json"], indirect=True
+    )
+    def test_get_connected_user_details_allows_null_balance_raw(
+        self, mocker, api_client, test_data
+    ):
+        """Accounts without a raw balance (balanceRaw null) must parse."""
+        # Arrange
+        mock_api_call(mocker, json_response=test_data)
+
+        # Act
+        details = api_client.get_connected_user_details(test_data["userId"])
+
+        # Assert
+        assert isinstance(details, GetConnectedUserDetailsResponse)
+        assert len(details.accounts) == 1
+        assert details.accounts[0].display_name == "Cathay Pacific (Cathay)"
+        assert details.accounts[0].balance_raw is None
+
     def test_pydantic_validation_error(self, mocker, api_client):
         # Arrange
         # 'kind' is required, so we remove it from the mock response
