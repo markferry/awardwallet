@@ -1,0 +1,30 @@
+{
+    "userId": 123456,
+    "fullName": "Test User",
+    "status": "Plus",
+    "userName": "testuser",
+    "email": "test@example.com",
+    "forwardingEmail": "test@email.AwardWallet.com",
+    "connectionType": "Connected",
+    "accountsAccessLevel": "Read all",
+    "accountsSharedByDefault": true,
+    "editConnectionUrl": "https://business.awardwallet.com/members/connection/445793",
+    "accountListUrl": "https://business.awardwallet.com/account/list/?agentId=445792",
+    "timelineUrl": "https://business.awardwallet.com/timeline/?agentId=445792445792",
+    "accounts": [
+        {
+            "accountId": 1233400,
+            "code": "cathay",
+            "displayName": "Cathay Pacific (Cathay)",
+            "kind": "Airlines",
+            "login": "cathaylogin",
+            "autologinUrl": "n/a",
+            "updateUrl": "n/a",
+            "editUrl": "n/a",
+            "balance": "n/a",
+            "balanceRaw": null,
+            "owner": "Test User",
+            "errorCode": 8
+        }
+    ]
+}
