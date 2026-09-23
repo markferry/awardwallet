@@ -295,6 +295,7 @@ class ProviderKind(IntEnum):
     SURVEY = 9
     CRUISE = 10
     PARKING = 12
+    ACTIVITY = 13
 
     @classmethod
     def from_str(cls, value: str) -> ProviderKind | None:
@@ -311,6 +312,7 @@ class ProviderKind(IntEnum):
             "Surveys": cls.SURVEY,
             "Cruises": cls.CRUISE,
             "Parking": cls.PARKING,
+            "Activities": cls.ACTIVITY,
         }
         return mapping.get(value)
 
